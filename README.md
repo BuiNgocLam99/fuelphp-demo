@@ -1,3 +1,6 @@
+ oil refine migrate --packages=auth  
+
+
 # FuelPHP
 
 * Version: 1.8.2
