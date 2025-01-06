@@ -1,5 +1,5 @@
- oil refine migrate --packages=auth  
-
+oil refine migrate --packages=auth  
+php oil refine migrate
 
 # FuelPHP
 
