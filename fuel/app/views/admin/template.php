@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <?= Asset::css('client/main.css'); ?>
-    
+
     <!-- <link href="headers.css" rel="stylesheet"> -->
 </head>
 
@@ -53,7 +53,7 @@
                             <use xlink:href="#bootstrap" />
                         </svg>
                     </a>
-                    
+
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li>
                             <a href="/" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/') ? 'link-secondary' : 'link-dark'; ?>">Home</a>
@@ -88,7 +88,47 @@
 
         <div class="container-fluid">
 
-            <?php echo $content; ?>
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-2 bg-light p-3 vh-100">
+                    <ul class="list-unstyled ps-0">
+                        <li class="mb-1">
+                            <a href="/admin/prefecture">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                                    Prefecture
+                                </button>
+                            </a>
+                        </li>
+                        <li class="mb-1">
+                           <a href="/admin/hotel">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                                    Hotel
+                                </button>
+                           </a>
+                        </li>
+
+                        <li class="border-top my-3"></li>
+
+                        <li class="mb-1">
+                            <a href="/admin/user">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                                    User
+                                </button>
+                            </a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="/admin/booking">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                                    Booking
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Content -->
+                <?= $content; ?>
+            </div>
 
         </div>
 
