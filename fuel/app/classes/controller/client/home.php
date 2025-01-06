@@ -15,7 +15,7 @@ class Controller_Client_Home extends Controller_Template
         $data['prefectures'] = Model_Prefecture::find('all');
         $data['hotels'] = Model_Hotel::query()
             ->related('prefecture')
-            ->limit(18)
+            ->limit(19)
             ->get();
 
         $this->template->content = View::forge('client/hotel/index', $data);
@@ -58,5 +58,30 @@ class Controller_Client_Home extends Controller_Template
         $data['related_hotels'] = $prefecture === null ? [] : $prefecture->hotels;
 
         $this->template->content = View::forge('client/hotel/detail', $data);
+    }
+
+    public function action_search()
+    {
+        $data = [];
+        $data['prefectures'] = Model_Prefecture::find('all');
+
+        $query = Input::get('query', '');
+
+        if (empty($query)) {
+            $data['hotels'] = Model_Hotel::query()
+                ->related('prefecture')
+                ->limit(19)
+                ->get();
+        } else {
+            $data['hotels'] = Model_Hotel::query()
+                ->related('prefecture')
+                ->where('name', 'LIKE', "%$query%")
+                // ->or_where('prefecture.name_jp', 'LIKE', "%$query%")
+                // ->or_where('prefecture.name_en', 'LIKE', "%$query%")
+                ->limit(19)
+                ->get();
+        }
+
+        $this->template->content = View::forge('client/hotel/index', $data);
     }
 }

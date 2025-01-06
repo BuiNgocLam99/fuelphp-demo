@@ -2,12 +2,13 @@
 
 namespace Fuel\Migrations;
 
-class Example
+class Bookings
 {
     function up()
     {
         \DBUtil::create_table('bookings', array(
             'id' => array('type' => 'int', 'auto_increment' => true),
+            'user_id' => array('type' => 'int'),
             'hotel_id' => array('type' => 'int'),
             'customer_name' => array('type' => 'varchar', 'constraint' => 255),
             'customer_contact' => array('type' => 'varchar', 'constraint' => 255),

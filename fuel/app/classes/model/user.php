@@ -4,22 +4,13 @@ class Model_User extends Orm\Model
 {
     protected static $_properties = [
         'id',
-        'name' => [
+        'username' => [
             'data_type' => 'varchar',
             'label' => 'Name',
             'validation' => [
                 'required', 
                 'min_length' => [2],
                 'max_length' => [255],
-            ],
-        ],
-        'email' => [
-            'data_type' => 'varchar',
-            'label' => 'Email',
-            'validation' => [
-                'required',
-                'valid_email',
-                'unique',
             ],
         ],
         'password' => [
@@ -30,13 +21,20 @@ class Model_User extends Orm\Model
                 'min_length' => [6],
             ],
         ],
-        'is_admin' => [
-            'data_type' => 'tinyint',
-            'label' => 'Is Admin',
+        'group_id',
+        'email' => [
+            'data_type' => 'varchar',
+            'label' => 'Email',
             'validation' => [
-                'in_array' => [0, 1],
+                'required',
+                'valid_email',
+                'unique',
             ],
         ],
+        'last_login',
+        'previous_login',
+        'login_hash',
+        'user_id',
         'created_at' => [
             'data_type' => 'timestamp',
             'label' => 'Created At',
@@ -55,5 +53,15 @@ class Model_User extends Orm\Model
 
     protected static $_to_array_exclude = [
         'password'
+    ];
+
+    protected static $_has_many = [
+        'booking_list' => [
+            'key_from' => 'id',
+            'model_to' => 'Model_Booking',
+            'key_to' => 'user_id',
+            'cascade_save' => true,
+            'cascade_delete' => false,
+        ],
     ];
 }

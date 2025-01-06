@@ -28,9 +28,13 @@
                                     </a>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a href="" class="hotel-link"><?= $hotel->name ?></a>
+                                            <a href="/prefecture/<?= $hotel->prefecture->id ?>/hotel/<?= $hotel->id ?>" class="hotel-link">
+                                                <?= $hotel->name ?>
+                                            </a>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">Booking</button>
+                                                <a href="/prefecture/<?= $hotel->prefecture->id ?>/hotel/<?= $hotel->id ?>" class="hotel-link">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Booking</button>
+                                                </a>
                                             </div>
                                         </div>
                                         <small class="text-muted">

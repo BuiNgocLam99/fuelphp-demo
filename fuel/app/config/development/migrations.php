@@ -4,7 +4,12 @@ return array(
   array(
     'app' => 
     array(
-      'default' => 0,
+      'default' => 
+      array(
+        0 => '012_prefectures',
+        1 => '013_hotels',
+        2 => '014_bookings',
+      ),
     ),
     'module' => 
     array(

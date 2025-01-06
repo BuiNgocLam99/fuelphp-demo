@@ -21,20 +21,41 @@
                 <div>
                     <?= Asset::img($hotel->file_path, ['alt' => 'Thumbnail', 'class' => 'img-fluid']); ?>
                 </div>
+
                 <div>
                     <h2><?= $hotel->name ?></h2>
+
                     <div class="d-flex justify-content-between">
                         <a href="/prefecture/<?= $prefecture->id ?>">
                             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                                 <?= $prefecture->name_jp ?> (<?= $prefecture->name_en ?>)
                             </button>
                         </a>
-                        <button type="button" class="btn btn-sm btn-success">Booking</button>
+
+                        <?php if (Auth::check()) { ?>
+                            <button type="button" class="btn btn-sm btn-success" id="booking-btn">Booking</button>
+                        <?php } else { ?>
+                            <a href="/auth/login?prefecture=<?= $hotel->prefecture->id ?>&hotel=<?= $hotel->id ?>">
+                                <button type="button" class="btn btn-sm btn-success">Booking</button>
+                            </a>
+                        <?php } ?>
+                    </div>
+
+                    <div class="p-2">
+                        <div class="mb-3">
+                            <label for="datetime_from" class="form-label">From</label>
+                            <input type="datetime-local" class="form-control" id="datetime_from" name="datetime_from">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="datetime_to" class="form-label">To</label>
+                            <input type="datetime-local" class="form-control" id="datetime_to" name="datetime_to">
+                        </div>
+
+                        <span id="booking-message"></span>
                     </div>
                 </div>
-
             </div>
-
 
             <p>The Lorem ipsum text is derived from sections 1.10.32 and 1.10.33 of Cicero's De finibus bonorum et malorum.[6][7] The physical source may have been the 1914 Loeb Classical Library edition of De finibus, where the Latin text, presented on the left-hand (even) pages, breaks off on page 34 with "Neque porro quisquam est qui do-" and continues on page 36 with "lorem ipsum ...", suggesting that the galley type of that page was mixed up to make the dummy text seen today.[1]
 
@@ -66,7 +87,9 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <a href="" class="hotel-link"><?= $hotel->name ?></a>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">Booking</button>
+                                                <a href="/prefecture/<?= $hotel->prefecture->id ?>/hotel/<?= $hotel->id ?>" class="hotel-link">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Booking</button>
+                                                </a>
                                             </div>
                                         </div>
                                         <small class="text-muted">
@@ -86,3 +109,51 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#booking-btn').click(function () {
+            $('#booking-message').html('');
+
+            const datetimeFrom = $('#datetime_from').val();
+            const datetimeTo = $('#datetime_to').val();
+            const hotelId = <?= $hotel->id ?>
+
+            if (!datetimeFrom || !datetimeTo) {
+                $('#booking-message').html('Please select both "From" and "To" datetime.');
+                return;
+            }
+
+            if (new Date(datetimeFrom) >= new Date(datetimeTo)) {
+                $('#booking-message').html('The "From" datetime must be earlier than the "To" datetime.');
+                return;
+            }
+
+            $.ajax({
+                url: '/client/booking',
+                method: 'POST',
+                data: {
+                    datetime_from: datetimeFrom,
+                    datetime_to: datetimeTo,
+                    hotel_id: hotelId,
+                },
+                success: function (response) {
+                    response = JSON.parse(response);
+                    console.log(response);
+                    if (response.status == 'success') {
+                        $('#booking-message').html('Booking successful!').css('color', 'green');
+                    } else {
+                        $('#booking-message').html('Booking failed');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.responseText) {
+                        $('#booking-message').html(JSON.parse(xhr.responseText).message);
+                    } else {
+                        $('#booking-message').html('An error occurred while processing your booking.');
+                    }
+                }
+            });
+        });
+    });
+</script>

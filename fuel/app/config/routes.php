@@ -43,4 +43,6 @@ return array(
 
 	'prefecture/:prefecture_id/hotel/:hotel_id' => 'client/home/hotel',
 	'prefecture/:prefecture_id' => 'client/home/prefecture',
+
+	'booking' => 'client/booking/index',
 );

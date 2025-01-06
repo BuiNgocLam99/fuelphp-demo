@@ -10,8 +10,8 @@
     <title>Headers · Bootstrap v5.0</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -166,32 +166,35 @@
                             <use xlink:href="#bootstrap" />
                         </svg>
                     </a>
-
+                    
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>
+                        <li>
+                            <a href="/" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/') ? 'link-secondary' : 'link-dark'; ?>">Home</a>
+                        </li>
+                        <li>
+                            <a href="/booking" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/booking') ? 'link-secondary' : 'link-dark'; ?>">Booking List</a>
+                        </li>
                     </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="/client/home/search">
+                        <input type="search" name="query" class="form-control" placeholder="Search..." aria-label="Search" value="<?= isset($_GET['query']) ? htmlspecialchars($_GET['query']) : ''; ?>">
                     </form>
 
                     <div class="dropdown text-end">
-                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                        </a>
-                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li>
-                        </ul>
+                        <?php if (Auth::check()): ?>
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?= Auth::get_user()->username ?>
+                            </a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
+                            </ul>
+                        <?php else: ?>
+                            <a href="/auth/login" class="d-block link-dark text-decoration-none">
+                                Login
+                            </a>
+                        <?php endif; ?>
                     </div>
+
                 </div>
             </div>
         </header>
@@ -203,7 +206,6 @@
         </div>
 
     </main>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

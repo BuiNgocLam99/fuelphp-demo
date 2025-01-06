@@ -55,4 +55,14 @@ class Model_Hotel extends Orm\Model
             'cascade_delete' => false,
         ],
     ];
+
+    protected static $_has_many = [
+        'booking_list' => [
+            'key_from' => 'id',
+            'model_to' => 'Model_Hotel',
+            'key_to' => 'hotel_id',
+            'cascade_save' => true,
+            'cascade_delete' => false,
+        ],
+    ];
 }

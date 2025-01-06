@@ -6,82 +6,107 @@ class Controller_Auth extends Controller_Template
 
     public function action_register()
     {
+        $params = [];
+
         if (Input::method() == 'POST') {
             $val = Validation::forge();
             $val->add_field('username', 'Name', 'required|min_length[2]|max_length[255]');
             $val->add_field('email', 'Email', 'required|valid_email');
             $val->add_field('password', 'Password', 'required|min_length[6]');
-            
+
             if ($val->run()) {
-                return 'if';
-                echo Input::post('name');
                 try {
                     Auth::create_user(
-                        Input::post('name'),
+                        Input::post('username'),
                         Input::post('password'),
                         Input::post('email'),
                         0
                     );
-    
+        
                     return Response::forge(json_encode([
                         'status' => 'success',
                         'message' => 'Registration successful.',
                     ]), 200);
                 } catch (SimpleUserUpdateException $e) {
-                    return Response::forge(json_encode([
-                        'status' => 'error',
-                        'message' => 'Username or email already exists.',
-                    ]), 400);
+                    $params = [
+                        'errors' => [
+                            'username' => 'Username or email already exists.'
+                        ],
+                        'username' => Input::post('username'),
+                        'email' => Input::post('email'),
+                        'password' => Input::post('password')
+                    ];
                 }
             } else {
-                return 'else';
-                return Response::forge(json_encode([
-                    'status' => 'error',
-                    'message' => $val->error(),
-                ]), 422);
+                $params = [
+                    'errors' => $val->error(),
+                    'username' => Input::post('username'),
+                    'email' => Input::post('email'),
+                    'password' => Input::post('password')
+                ];
             }
         }
 
         $this->template->title = 'Register';
-        $this->template->content = View::forge('auth/register');
+        $this->template->content = View::forge('auth/register', $params);
     }
 
-    // Hiển thị form đăng nhập
     public function action_login()
     {
-        // Kiểm tra nếu người dùng đã đăng nhập
         if (Auth::check()) {
-            Response::redirect('dashboard');
+            Response::redirect('/');
         }
+    
+        $params = [];
 
-        // Xử lý khi form được gửi
+        $prefecture = Input::post('prefecture');
+        $hotel = Input::post('hotel');
+
+        $redirect_to = ($prefecture && $hotel) ? "/prefecture/$prefecture/hotel/$hotel" : '';
+
         if (Input::method() == 'POST') {
-            $auth = Auth::instance();
-            if ($auth->login(Input::post('username'), Input::post('password'))) {
-                // Đăng nhập thành công
-                if (Input::post('remember', false)) {
-                    Auth::remember_me();
+            $val = Validation::forge();
+            $val->add('email', 'Email Address')->add_rule('required')->add_rule('valid_email');
+            $val->add('password', 'Password')->add_rule('required');
+    
+            if ($val->run()) {
+                $auth = Auth::instance();
+                if ($auth->login(Input::post('email'), Input::post('password'))) {
+                    
+                    if (Input::post('remember-me', false)) {
+                        Auth::remember_me();
+                    } else {
+                        Auth::dont_remember_me();
+                    }
+
+                    Response::redirect($redirect_to);
                 } else {
-                    Auth::dont_remember_me();
+                    $params = [
+                        'errors' => ['login' => 'Incorrect email or password.'],
+                        'email' => Input::post('email'),
+                        'password' => Input::post('password')
+                    ];
                 }
-                Response::redirect('dashboard');
             } else {
-                // Đăng nhập thất bại
-                Session::set_flash('error', 'Tên đăng nhập hoặc mật khẩu không đúng.');
+                $params = [
+                    'errors' => $val->error(),
+                    'email' => Input::post('email'),
+                    'password' => Input::post('password')
+                ];
             }
         }
-
-        // Hiển thị view đăng nhập
-        $this->template->title = 'Đăng nhập';
-        $this->template->content = View::forge('auth/login');
+    
+        $this->template->title = 'Login';
+        $this->template->content = View::forge('auth/login', $params);
     }
 
-    // Đăng xuất
     public function action_logout()
     {
         Auth::dont_remember_me();
         Auth::logout();
-        Session::set_flash('success', 'Bạn đã đăng xuất.');
-        Response::redirect('auth/login');
+
+        $referrer = Input::server('HTTP_REFERER') ? Input::server('HTTP_REFERER') : '/';
+
+        Response::redirect($referrer);
     }
 }
