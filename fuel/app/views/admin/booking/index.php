@@ -1,40 +1,35 @@
-<div class="col-md-10">
-    <div class="album p-3 bg-light vh-100">
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <h2>Booking</h2>
-            </div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 m-1">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<h1>Booking list</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Customer name</th>
+            <th scope="col">Customer contact</th>
+            <th scope="col">Prefecture</th>
+            <th scope="col">Hotel</th>
+            <th scope="col">Checkin time</th>
+            <th scope="col">Checkout time</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php 
+        $start = Pagination::instance('pagination')->offset + 1;
+        
+        foreach ($booking_list as $item): ?>
+            <tr>
+                <td><?= $start++; ?></td>
+                <td><?= $item->id; ?></td>
+                <td><?= $item->user->username; ?></td>
+                <td><?= $item->user->email; ?></td>
+                <td><?= $item->hotel->prefecture->name_jp; ?> (<?= $item->hotel->prefecture->name_en; ?>)</td>
+                <td><?= $item->hotel->name; ?></td>
+                <td><?= $item->checkin_time; ?></td>
+                <td><?= $item->checkout_time; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?= Pagination::instance('pagination')->render(); ?>

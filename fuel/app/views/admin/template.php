@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <?= Asset::css('client/main.css'); ?>
+    <?= Asset::css('pagination.css'); ?>
 
     <!-- <link href="headers.css" rel="stylesheet"> -->
 </head>
@@ -90,7 +91,7 @@
 
             <div class="row">
                 <!-- Sidebar -->
-                <div class="col-md-2 bg-light p-3 vh-100">
+                <div class="col-md-2 bg-light p-3">
                     <ul class="list-unstyled ps-0">
                         <li class="mb-1">
                             <a href="/admin/prefecture">
@@ -126,12 +127,20 @@
                     </ul>
                 </div>
 
-                <!-- Content -->
-                <?= $content; ?>
+                <div class="col-md-9">
+                    <div class="album p-3 bg-light">
+                        <div class="container">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                
+                                <!-- Content -->
+                                <?= $content; ?>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
