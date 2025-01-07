@@ -4,8 +4,17 @@ class Controller_Admin_Booking extends Controller_Template
 {
     public $template = 'admin/template';
 
+    public function before()
+    {
+        parent::before();
+
+        $this->template->title = 'Booking';
+    }
+
     public function action_index()
     {
+        $filter = Input::get('filter');
+
         $data = [];
 
         $config = array(
@@ -17,17 +26,20 @@ class Controller_Admin_Booking extends Controller_Template
         
         $pagination = Pagination::forge('pagination', $config);
 
-        $data['booking_list'] = Model_Booking::query()
+        $query = Model_Booking::query()
+            ->related('user')
             ->related('hotel')
             ->related('hotel.prefecture')
-            ->related('user')
             ->rows_offset($pagination->offset)
-            ->rows_limit($pagination->per_page)
-            ->get();
+            ->rows_limit($pagination->per_page);
 
+        if ($filter && $filter === 'oldest') {
+            $query->order_by('id', 'desc');
+        }
+
+        $data['booking_list'] = $query->get();
         $data['pagination'] = $pagination;
 
-        $this->template->title = 'Booking list';
         $this->template->content = View::forge('admin/booking/index', $data);
     }
 }

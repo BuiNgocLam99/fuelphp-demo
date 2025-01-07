@@ -1,4 +1,17 @@
-<h1>Booking list</h1>
+<div class="d-flex justify-content-between w-100">
+    <h1>Booking list</h1>
+    <div class="dropdown">
+        <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="/admin/booking">Newest</a>
+            <a class="dropdown-item" href="/admin/booking?filter=oldest">Oldest</a>
+        </div>
+    </div>
+    <div class="w-25"></div>
+</div>
 
 <table class="table table-hover">
     <thead>

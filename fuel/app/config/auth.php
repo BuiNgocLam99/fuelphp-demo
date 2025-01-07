@@ -24,4 +24,13 @@ return array(
     'verify_multiple_logins' => false,
     'salt'                   => 'Th1s=mY0Wn_$@|+',
     'iterations'             => 10000,
+
+    // Define user groups
+    'groups' => array(
+        -1 => array('name' => 'Banned', 'roles' => array()),
+        0  => array('name' => 'Guests', 'roles' => array()),
+        1  => array('name' => 'Users', 'roles' => array()), // Defaul
+        50 => array('name' => 'Clients', 'roles' => array('client')), // Clients
+        100 => array('name' => 'Admins', 'roles' => array('admin')),  // Admins
+    ),
 );
