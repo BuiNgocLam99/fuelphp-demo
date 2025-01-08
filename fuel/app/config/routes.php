@@ -51,11 +51,6 @@ return array(
 	'admin/user/create' => 'admin/user/create',
 	'admin/booking/create' => 'admin/booking/create',
 
-	// 'admin/prefecture/edit/:id' => 'admin/prefecture/edit',
-	// 'admin/hotel/edit:id' => 'admin/hotel/edit',
-	// 'admin/user/edit:id' => 'admin/user/edit',
-	// 'admin/booking/edit:id' => 'admin/booking/edit',
-
 	'admin' => 'admin/prefecture/index',
 	'admin/prefecture(/:segment)?' => 'admin/prefecture/index',
 	'admin/hotel(/:segment)?' => 'admin/hotel/index',

@@ -30,6 +30,15 @@ class Model_Prefecture extends Orm\Model
                 'max_length' => [2048],
             ],
         ],
+        'status' => [
+            'data_type' => 'tinyint',
+            'label' => 'Status',
+            'validation' => [
+                'required',
+                'in_array' => [[0, 1]],
+            ],
+            'default' => 1,
+        ],
         'created_at' => [
             'data_type' => 'timestamp',
             'label' => 'Created At',

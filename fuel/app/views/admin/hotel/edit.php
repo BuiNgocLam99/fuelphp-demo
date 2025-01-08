@@ -48,6 +48,19 @@
         <br>
     </div><br>
 
+    <div class="form-group">
+        <?php echo Form::label('Status', 'status'); ?>
+        <select name="status" class="form-select" required>
+            <option value="1" <?php echo $hotel->status == 1 ? 'selected' : ''; ?>>Active</option>
+            <option value="0" <?php echo $hotel->status == 0 ? 'selected' : ''; ?>>Inactive</option>
+        </select>
+        <?php if (!empty($errors) && isset($errors['status'])): ?>
+            <div class="text-danger">
+                <?php echo $errors['status']; ?>
+            </div>
+        <?php endif; ?>
+    </div><br>
+
     <?php echo Form::submit('submit', 'Update', ['class' => 'btn btn-secondary']); ?>
 
     <?php echo Form::close(); ?><br>

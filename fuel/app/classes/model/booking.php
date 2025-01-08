@@ -10,6 +10,15 @@ class Model_Booking extends Orm\Model
         'customer_contact',
         'checkin_time',
         'checkout_time',
+        'status' => [
+            'data_type' => 'tinyint',
+            'label' => 'Status',
+            'validation' => [
+                'required',
+                'in_array' => [[0, 1, 2]],
+            ],
+            'default' => 1,
+        ],
         'created_at',
         'updated_at',
     ];

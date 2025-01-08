@@ -4,6 +4,18 @@ class Controller_Auth extends Controller_Template
 {
     public $template = 'auth/template';
 
+    static public function checkAdmin()
+    {
+        if (!Auth::check()) {
+            Response::redirect('/auth/login');
+        }
+
+        $groups = Auth::instance()->get_groups();
+        if (empty($groups) || $groups[0][1]->id != 5) {
+            Response::redirect('/');
+        }
+    }
+
     public function action_register()
     {
         $params = [];
@@ -50,7 +62,6 @@ class Controller_Auth extends Controller_Template
         $this->template->title = 'Register';
         $this->template->content = View::forge('auth/register', $params);
     }
-
     public function action_login()
     {
         if (Auth::check()) {
@@ -77,6 +88,12 @@ class Controller_Auth extends Controller_Template
                         Auth::remember_me();
                     } else {
                         Auth::dont_remember_me();
+                    }
+
+                    $groups = Auth::instance()->get_groups();
+
+                    if ($groups[0][1]->id == 5) {
+                        Response::redirect('/admin');
                     }
 
                     Response::redirect($redirect_to);

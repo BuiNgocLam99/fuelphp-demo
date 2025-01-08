@@ -120,7 +120,7 @@
             const hotelId = <?= $hotel->id ?>
 
             if (!datetimeFrom || !datetimeTo) {
-                $('#booking-message').html('Please select both "From" and "To" datetime.');
+                $('#booking-message').html('Please select both "From" and "To" datetime.').css('color', 'red');
                 return;
             }
 
@@ -141,7 +141,7 @@
                     response = JSON.parse(response);
                     console.log(response);
                     if (response.status == 'success') {
-                        $('#booking-message').html('Booking successful!').css('color', 'green');
+                        $('#booking-message').html('Booking successful! <a href="/booking">Your booking list.</a>').css('color', 'green');
                     } else {
                         $('#booking-message').html('Booking failed');
                     }

@@ -1,14 +1,20 @@
 <div class="d-flex justify-content-between w-100">
     <h1>Prefectures</h1>
-    <div class="dropdown">
-        <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="bi bi-filter"></i> Filter
-        </a>
+    <div class="d-flex">
+        <div class="dropdown">
+            <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-filter"></i> Filter
+            </a>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="/admin/prefecture">Newest</a>
-            <a class="dropdown-item" href="/admin/prefecture?filter=oldest">Oldest</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" onclick="buildQueryString('filter', 'newest')">Newest</a>
+                <a class="dropdown-item" onclick="buildQueryString('filter', 'oldest')">Oldest</a>
+            </div>
         </div>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 px-2" method="GET" action="/admin/prefecture">
+            <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search" value="<?= isset($search) ? htmlspecialchars($search) : ''; ?>">
+        </form>
     </div>
     <a href="/admin/prefecture/create"><button class="btn btn-dark">Add prefecture</button></a>
 </div>
@@ -20,6 +26,7 @@
             <th scope="col">ID</th>
             <th scope="col">Japanese name</th>
             <th scope="col">English name</th>
+            <th scope="col">Hotels</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -33,9 +40,9 @@
                 <td><?= $item->id; ?></td>
                 <td><?= $item->name_jp; ?></td>
                 <td><?= $item->name_en; ?></td>
+                <td><?= count($item->hotels); ?></td>
                 <td class="text-center">
                     <a href="/admin/prefecture/edit/<?= $item->id; ?>"><button class="btn btn-dark">Edit</button></a>
-                    <button class="btn btn-dark" onclick="showRemoveModal(<?= $item->id; ?>)">Remove</button>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -44,86 +51,15 @@
 
 <?= Pagination::instance('pagination')->render(); ?>
 
-<!-- Modal Popup -->
-<div class="modal fade" id="removeRelationModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="removeModalLabel">Remove Prefecture and Hotels</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Select hotels to remove along with the prefecture:</p>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="selectAllHotels"></th>
-                            <th>Hotel ID</th>
-                            <th>Hotel Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="relationTableBody"></tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="confirmRemoveButton">Remove</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    let selectedPrefectureId = null;
+    function buildQueryString(param = '', value) {
+        const currentUrl = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        urlParams.set(param, value);
 
-    function showRemoveModal(prefectureId) {
-        selectedPrefectureId = prefectureId;
+        const newUrl = currentUrl + '?' + urlParams.toString();
 
-        $.get(`/admin/hotel/hotels/${prefectureId}`, function(data) {
-            const hotels = Object.values(data.hotels);
-
-            const tbody = $('#relationTableBody');
-            tbody.empty();
-
-            hotels.forEach(hotel => {
-                const row = `
-                    <tr>
-                        <td><input type="checkbox" class="hotel-checkbox" value="${hotel.id}"></td>
-                        <td>${hotel.id}</td>
-                        <td>${hotel.name}</td>
-                    </tr>
-                `;
-                tbody.append(row);
-            });
-
-            $('#removeRelationModal').modal('show');
-        });
-
+        window.location.href = newUrl;
     }
-
-    $('#selectAllHotels').on('change', function() {
-        $('.hotel-checkbox').prop('checked', this.checked);
-    });
-
-    $('#confirmRemoveButton').on('click', function() {
-        const selectedHotels = $('.hotel-checkbox:checked').map(function() {
-            return $(this).val();
-        }).get();
-
-        $.ajax({
-            url: `/admin/prefecture/delete/${selectedPrefectureId}`,
-            method: 'POST',
-            data: {
-                hotels: selectedHotels
-            },
-            success: function() {
-                alert('Prefecture and selected hotels removed successfully!');
-                $('#removeRelationModal').modal('hide');
-                location.reload();
-            },
-            error: function() {
-                alert('Error while removing prefecture or hotels.');
-            }
-        });
-    });
 </script>

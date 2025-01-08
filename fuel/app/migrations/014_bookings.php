@@ -14,6 +14,7 @@ class Bookings
             'customer_contact' => array('type' => 'varchar', 'constraint' => 255),
             'checkin_time' => array('type' => 'timestamp'),
             'checkout_time' => array('type' => 'timestamp'),
+            'status' => array('type' => 'tinyint'),
             'created_at' => array('type' => 'timestamp', 'default' => \DB::expr('CURRENT_TIMESTAMP')),
             'updated_at' => array('type' => 'timestamp', 'null' => true, 'on update' => \DB::expr('CURRENT_TIMESTAMP')),
         ), array('id'), true);

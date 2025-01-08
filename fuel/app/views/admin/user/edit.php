@@ -51,18 +51,14 @@
     </div><br>
 
     <div class="form-group">
-        <?php echo Form::label('Group', 'group_id'); ?>
-        <select name="group_id" class="form-select" required>
-            <?php foreach ($group_ids as $group_name => $group_id): ?>
-                <option value="<?php echo $group_id; ?>"
-                    <?php echo Input::post('group_id', $user->group_id) == $group_id ? 'selected' : ''; ?>>
-                    <?php echo ucfirst($group_name); ?>
-                </option>
-            <?php endforeach; ?>
+        <?php echo Form::label('Status', 'status'); ?>
+        <select name="status" class="form-select" required>
+            <option value="1" <?php echo $user->status == 1 ? 'selected' : ''; ?>>Active</option>
+            <option value="0" <?php echo $user->status == 0 ? 'selected' : ''; ?>>Inactive</option>
         </select>
-        <?php if (!empty($errors) && isset($errors['group_id'])): ?>
+        <?php if (!empty($errors) && isset($errors['status'])): ?>
             <div class="text-danger">
-                <?php echo $errors['group_id']; ?>
+                <?php echo $errors['status']; ?>
             </div>
         <?php endif; ?>
     </div><br>

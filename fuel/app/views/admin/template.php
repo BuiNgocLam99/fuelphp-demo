@@ -64,10 +64,6 @@
                         </li>
                     </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="/client/home/search">
-                        <input type="search" name="query" class="form-control" placeholder="Search..." aria-label="Search" value="<?= isset($_GET['query']) ? htmlspecialchars($_GET['query']) : ''; ?>">
-                    </form>
-
                     <div class="dropdown text-end">
                         <?php if (Auth::check()): ?>
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">

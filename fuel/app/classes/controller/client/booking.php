@@ -24,6 +24,7 @@ class Controller_Client_Booking extends Controller_Template
                     'message' => 'The "From" datetime must be earlier than the "To" datetime.'
                 ]), 400);
             }
+            
 
             try {
 

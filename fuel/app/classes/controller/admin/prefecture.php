@@ -11,27 +11,40 @@ class Controller_Admin_Prefecture extends Controller_Template
     {
         parent::before();
 
+        Controller_Auth::checkAdmin();
+
         $this->template->title = 'Prefecture';
     }
 
     public function action_index()
     {
         $filter = Input::get('filter');
+        $search = trim(Input::get('search'));
 
         $data = [];
 
+        $query = Model_Prefecture::query();
+
+        if ($search) {
+            $query->where('name_jp', 'like', '%' . $search . '%')
+                ->or_where('name_en', 'like', '%' . $search . '%');
+        }
+
+        $total_items = $query->count();
+
         $config = array(
-            'pagination_url' => Uri::create('admin/prefecture'),
-            'total_items'    => Model_Prefecture::count(),
+            'pagination_url' => Uri::create('admin/prefecture', [], [
+                'filter' => $filter,
+                'search' => $search,
+            ]),
+            'total_items'    => $total_items,
             'per_page'       => 10,
             'uri_segment'    => 3,
         );
-        
+
         $pagination = Pagination::forge('pagination', $config);
 
-        $query = Model_Prefecture::query()
-            // ->related('hotels')
-            ->rows_offset($pagination->offset)
+        $query->rows_offset($pagination->offset)
             ->rows_limit($pagination->per_page);
 
         if ($filter && $filter === 'oldest') {
@@ -40,6 +53,7 @@ class Controller_Admin_Prefecture extends Controller_Template
 
         $data['prefectures'] = $query->get();
         $data['pagination'] = $pagination;
+        $data['search'] = $search;
 
         $this->template->content = View::forge('admin/prefecture/index', $data);
     }
@@ -110,54 +124,5 @@ class Controller_Admin_Prefecture extends Controller_Template
 
         $this->template->set_global('prefecture', $prefecture, false);
         $this->template->content = View::forge('admin/prefecture/edit');
-    }
-
-    public function action_delete($id)
-    {
-        $hotels = Input::post('hotels', []);
-
-        DB::start_transaction();
-
-        try {
-            if (!empty($hotels)) {
-                $exclude_images = Controller_Admin_Hotel::EXCLUDE_IMAGES;
-            
-                foreach ($hotels as $hotel) {
-                    $file_path = $hotel->file_path;
-            
-                    $file_name = basename($file_path);
-            
-                    $image_name = pathinfo($file_name, PATHINFO_FILENAME);
-            
-                    if (!in_array($image_name, $exclude_images)) {
-                        $file_to_delete = DOCROOT . 'assets/img/hotel/' . $file_name;
-            
-                        if (file_exists($file_to_delete)) {
-                            unlink($file_to_delete);
-                        }
-                    }
-                }
-            
-                DB::delete('hotels')
-                    ->where('id', 'in', $hotels)
-                    ->execute();
-            }
-
-            DB::update('hotels')
-                ->set(['prefecture_id' => null])
-                ->where('prefecture_id', $id)
-                ->execute();
-
-            $prefecture = Model_Prefecture::find($id);
-            if ($prefecture) {
-                $prefecture->delete();
-            }
-
-            DB::commit_transaction();
-            return Response::forge(json_encode(['success' => true]), 200);
-        } catch (Exception $e) {
-            DB::rollback_transaction();
-            return Response::forge(json_encode(['error' => $e->getMessage()]), 500);
-        }
     }
 }
