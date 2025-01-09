@@ -1,5 +1,6 @@
 <?php
 
+use Auth\Auth;
 use Fuel\Core\Controller_Template;
 use Fuel\Core\Debug;
 use Fuel\Core\Response;

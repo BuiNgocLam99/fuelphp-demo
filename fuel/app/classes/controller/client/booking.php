@@ -4,6 +4,15 @@ class Controller_Client_Booking extends Controller_Template
 {
     public $template = 'client/template';
 
+    public function before()
+    {
+        parent::before();
+
+        Controller_Auth::checkClient();
+
+        $this->template->title = 'Prefecture';
+    }
+
     public function action_index()
     {
         if (Input::method() == 'POST') {

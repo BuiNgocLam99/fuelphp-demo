@@ -1,5 +1,10 @@
 <?php
 
+use Fuel\Core\Debug;
+use Service\Email;
+
+require_once '/Applications/MAMP/htdocs/fuelphp/fuel/app/classes/service/email.php';
+
 class Controller_Auth extends Controller_Template
 {
     public $template = 'auth/template';
@@ -11,8 +16,16 @@ class Controller_Auth extends Controller_Template
         }
 
         $groups = Auth::instance()->get_groups();
-        if (empty($groups) || $groups[0][1]->id != 5) {
+
+        if (!empty($groups[0][1]->id) && $groups[0][1]->id != 5) {
             Response::redirect('/');
+        }
+    }
+
+    static public function checkClient()
+    {
+        if (!Auth::check()) {
+            Response::redirect('/auth/login');
         }
     }
 
@@ -62,6 +75,7 @@ class Controller_Auth extends Controller_Template
         $this->template->title = 'Register';
         $this->template->content = View::forge('auth/register', $params);
     }
+
     public function action_login()
     {
         if (Auth::check()) {
@@ -84,15 +98,9 @@ class Controller_Auth extends Controller_Template
                 $auth = Auth::instance();
                 if ($auth->login(Input::post('email'), Input::post('password'))) {
                     
-                    if (Input::post('remember-me', false)) {
-                        Auth::remember_me();
-                    } else {
-                        Auth::dont_remember_me();
-                    }
-
                     $groups = Auth::instance()->get_groups();
 
-                    if ($groups[0][1]->id == 5) {
+                    if (!empty($groups[0][1]->id) && ($groups[0][1]->id == 5)) {
                         Response::redirect('/admin');
                     }
 
@@ -115,6 +123,50 @@ class Controller_Auth extends Controller_Template
     
         $this->template->title = 'Login';
         $this->template->content = View::forge('auth/login', $params);
+    }
+
+    public function action_resetpassword()
+    {
+        if (Input::method() == 'POST') {
+            $val = Validation::forge();
+            $val->add('email', 'Email Address')
+                ->add_rule('required')
+                ->add_rule('valid_email');
+
+            if ($val->run()) {
+                $email = Input::post('email');
+
+                $user = Model_User::query()->where('email', $email)->get_one();
+
+                if (!empty($user->email)) {
+                    $new_password = Str::random('alnum', 10);
+
+                    try {
+                        DB::start_transaction();
+
+                        $user->password = Auth::instance()->hash_password($new_password);
+                        $user->save();
+
+                        Service\Email::send($user, $new_password);
+
+                        DB::commit_transaction();
+
+                        Session::set_flash('success', 'Password reset successfully. Please check your email.');
+                    } catch (Exception $e) {
+                        DB::rollback_transaction();
+
+                        Session::set_flash('error', 'Failed to reset password. Please try again.');
+                    }
+                } else {
+                    Session::set_flash('error', 'Email address not found.');
+                }
+            } else {
+                $data['errors'] = $val->error();
+            }
+        }
+
+        $this->template->title = 'Reset password';
+        $this->template->content = View::forge('auth/resetpassword', isset($data) ? $data : []);
     }
 
     public function action_logout()

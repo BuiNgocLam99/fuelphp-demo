@@ -35,6 +35,11 @@
     'placeholder' => 'Password',
     'required' => true
 ]); ?>
+
+<div class="checkbox mb-3">
+    Have already an account? <a href="/auth/login">Login</a><br>
+</div>
+
 <?php if (isset($errors['password'])): ?>
     <div class="invalid-feedback">
         <?php echo $errors['password']; ?>
