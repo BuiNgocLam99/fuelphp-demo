@@ -41,6 +41,4 @@
 
 <button class="btn btn-lg btn-primary btn-block" type="submit">Reset password</button>
 
-
-
 <?php echo Form::close(); ?>

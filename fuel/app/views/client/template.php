@@ -7,14 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Headers · Bootstrap v5.0</title>
+    <title><?= $title ?></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <?= Asset::css('client/main.css'); ?>
-    
+
     <!-- <link href="headers.css" rel="stylesheet"> -->
 </head>
 
@@ -53,8 +53,15 @@
                             <use xlink:href="#bootstrap" />
                         </svg>
                     </a>
-                    
+
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <?php
+                        $groups = Auth::instance()->get_groups();
+                        if (!empty($groups[0][1]->id) && $groups[0][1]->id == 5): ?>
+                            <li>
+                                <a href="/admin" class="nav-link px-2">Dashboard</a>
+                            </li>
+                        <?php endif; ?>
                         <li>
                             <a href="/" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/') ? 'link-secondary' : 'link-dark'; ?>">Home</a>
                         </li>
@@ -73,6 +80,7 @@
                                 <?= Auth::get_user()->username ?>
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="/auth/changepassword" target="_blank">Change password</a></li>
                                 <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
                             </ul>
                         <?php else: ?>

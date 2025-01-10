@@ -1,0 +1,78 @@
+Error - Class 'Fuel\Tasks\Model_Booking' not found in APPPATH/tasks/booking.php on line 11
+Đã cập nhật 1 bản ghi.
+Đã cập nhật 0 bản ghi.
+Uncaught exception Fuel\Core\Database_Exception: 22007 - SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '1736479741' for column 'updated_at' at row 1 with query: "UPDATE `bookings` SET `status` = 2, `updated_at` = 1736479741 WHERE `id` = '1'" in /var/www/html/fuel/core/classes/database/pdo/connection.php on line 235
+Callstack: 
+#0 /var/www/html/fuel/core/classes/database/query.php(338): Fuel\Core\Database_PDO_Connection->query(3, 'UPDATE `booking...', false, true)
+#1 /var/www/html/fuel/packages/orm/classes/query.php(1791): Fuel\Core\Database_Query->execute(Object(Fuel\Core\Database_PDO_Connection))
+#2 /var/www/html/fuel/packages/orm/classes/model.php(1560): Orm\Query->update()
+#3 /var/www/html/fuel/packages/orm/classes/model.php(1421): Orm\Model->update()
+#4 /var/www/html/fuel/app/tasks/booking.php(19): Orm\Model->save()
+#5 /var/www/html/fuel/core/base56.php(37): Fuel\Tasks\Booking::run()
+#6 /var/www/html/fuel/packages/oil/classes/refine.php(106): call_fuel_func_array(Array, Array)
+#7 [internal function]: Oil\Refine::run('\\Fuel\\Tasks\\Boo...', Array)
+#8 /var/www/html/fuel/packages/oil/classes/command.php(124): call_user_func('Oil\\Refine::run', 'booking', Array)
+#9 /var/www/html/oil(68): Oil\Command::init(Array)
+#10 {main}
+
+Previous exception: 
+Uncaught exception PDOException: 22007 - SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '1736479741' for column 'updated_at' at row 1 in /var/www/html/fuel/core/classes/database/pdo/connection.php on line 206
+Callstack: 
+#0 /var/www/html/fuel/core/classes/database/pdo/connection.php(206): PDO->query('UPDATE `booking...')
+#1 /var/www/html/fuel/core/classes/database/query.php(338): Fuel\Core\Database_PDO_Connection->query(3, 'UPDATE `booking...', false, true)
+#2 /var/www/html/fuel/packages/orm/classes/query.php(1791): Fuel\Core\Database_Query->execute(Object(Fuel\Core\Database_PDO_Connection))
+#3 /var/www/html/fuel/packages/orm/classes/model.php(1560): Orm\Query->update()
+#4 /var/www/html/fuel/packages/orm/classes/model.php(1421): Orm\Model->update()
+#5 /var/www/html/fuel/app/tasks/booking.php(19): Orm\Model->save()
+#6 /var/www/html/fuel/core/base56.php(37): Fuel\Tasks\Booking::run()
+#7 /var/www/html/fuel/packages/oil/classes/refine.php(106): call_fuel_func_array(Array, Array)
+#8 [internal function]: Oil\Refine::run('\\Fuel\\Tasks\\Boo...', Array)
+#9 /var/www/html/fuel/packages/oil/classes/command.php(124): call_user_func('Oil\\Refine::run', 'booking', Array)
+#10 /var/www/html/oil(68): Oil\Command::init(Array)
+#11 {main}
+Uncaught exception Fuel\Core\Database_Exception: 22007 - SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '1736479801' for column 'updated_at' at row 1 with query: "UPDATE `bookings` SET `status` = 2, `updated_at` = 1736479801 WHERE `id` = '1'" in /var/www/html/fuel/core/classes/database/pdo/connection.php on line 235
+Callstack: 
+#0 /var/www/html/fuel/core/classes/database/query.php(338): Fuel\Core\Database_PDO_Connection->query(3, 'UPDATE `booking...', false, true)
+#1 /var/www/html/fuel/packages/orm/classes/query.php(1791): Fuel\Core\Database_Query->execute(Object(Fuel\Core\Database_PDO_Connection))
+#2 /var/www/html/fuel/packages/orm/classes/model.php(1560): Orm\Query->update()
+#3 /var/www/html/fuel/packages/orm/classes/model.php(1421): Orm\Model->update()
+#4 /var/www/html/fuel/app/tasks/booking.php(19): Orm\Model->save()
+#5 /var/www/html/fuel/core/base56.php(37): Fuel\Tasks\Booking::run()
+#6 /var/www/html/fuel/packages/oil/classes/refine.php(106): call_fuel_func_array(Array, Array)
+#7 [internal function]: Oil\Refine::run('\\Fuel\\Tasks\\Boo...', Array)
+#8 /var/www/html/fuel/packages/oil/classes/command.php(124): call_user_func('Oil\\Refine::run', 'booking', Array)
+#9 /var/www/html/oil(68): Oil\Command::init(Array)
+#10 {main}
+
+Previous exception: 
+Uncaught exception PDOException: 22007 - SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '1736479801' for column 'updated_at' at row 1 in /var/www/html/fuel/core/classes/database/pdo/connection.php on line 206
+Callstack: 
+#0 /var/www/html/fuel/core/classes/database/pdo/connection.php(206): PDO->query('UPDATE `booking...')
+#1 /var/www/html/fuel/core/classes/database/query.php(338): Fuel\Core\Database_PDO_Connection->query(3, 'UPDATE `booking...', false, true)
+#2 /var/www/html/fuel/packages/orm/classes/query.php(1791): Fuel\Core\Database_Query->execute(Object(Fuel\Core\Database_PDO_Connection))
+#3 /var/www/html/fuel/packages/orm/classes/model.php(1560): Orm\Query->update()
+#4 /var/www/html/fuel/packages/orm/classes/model.php(1421): Orm\Model->update()
+#5 /var/www/html/fuel/app/tasks/booking.php(19): Orm\Model->save()
+#6 /var/www/html/fuel/core/base56.php(37): Fuel\Tasks\Booking::run()
+#7 /var/www/html/fuel/packages/oil/classes/refine.php(106): call_fuel_func_array(Array, Array)
+#8 [internal function]: Oil\Refine::run('\\Fuel\\Tasks\\Boo...', Array)
+#9 /var/www/html/fuel/packages/oil/classes/command.php(124): call_user_func('Oil\\Refine::run', 'booking', Array)
+#10 /var/www/html/oil(68): Oil\Command::init(Array)
+#11 {main}
+Đã cập nhật 1 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 1 bản ghi.
+Đã cập nhật 1 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 1 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.
+Đã cập nhật 0 bản ghi.

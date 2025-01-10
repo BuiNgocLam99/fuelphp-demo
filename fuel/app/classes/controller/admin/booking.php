@@ -65,4 +65,9 @@ class Controller_Admin_Booking extends Controller_Template
 
         $this->template->content = View::forge('admin/booking/index', $data);
     }
+
+    public function action_change()
+    {
+        
+    }
 }

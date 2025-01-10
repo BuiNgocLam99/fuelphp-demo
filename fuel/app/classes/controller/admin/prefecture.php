@@ -47,7 +47,7 @@ class Controller_Admin_Prefecture extends Controller_Template
         $query->rows_offset($pagination->offset)
             ->rows_limit($pagination->per_page);
 
-        if ($filter && $filter === 'oldest') {
+        if ($filter && $filter === 'newest') {
             $query->order_by('id', 'desc');
         }
 

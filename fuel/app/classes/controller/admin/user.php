@@ -73,13 +73,11 @@ class Controller_Admin_User extends Controller_Template
             $username = Input::post('username');
             $email = Input::post('email');
             $password = Input::post('password');
-            $group_id = Input::post('group_id');
 
             $val = Validation::forge();
             $val->add_field('username', 'Username', 'required|min_length[2]|max_length[255]');
             $val->add_field('email', 'Email', 'required|valid_email');
             $val->add_field('password', 'Password', 'required|min_length[6]');
-            $val->add_field('group_id', 'Group', 'required');
 
             $errors = [];
 
@@ -96,6 +94,7 @@ class Controller_Admin_User extends Controller_Template
                 $user->email = $email;
                 $user->password = $hashed_password;
                 $user->status = 1;
+                $user->group_id = 3;
                 $user->created_at = \Fuel\Core\Date::forge()->get_timestamp();
                 $user->updated_at = \Fuel\Core\Date::forge()->get_timestamp();
 
@@ -139,7 +138,6 @@ class Controller_Admin_User extends Controller_Template
             $val->add_field('username', 'Username', 'required|min_length[2]|max_length[255]');
             $val->add_field('email', 'Email', 'required|valid_email');
             $val->add_field('password', 'Password', 'min_length[6]');
-            $val->add_field('group_id', 'Group', 'required');
             $val->add_field('status', 'Status', 'required|min_length[1]|max_length[1]');
 
             $errors = [];
@@ -160,7 +158,8 @@ class Controller_Admin_User extends Controller_Template
                 $user->username = $username;
                 $user->email = $email;
                 $user->status = $status;
-
+                $user->group_id = $group_id;
+                
                 if (!empty($password)) {
                     $user->password = Auth::hash_password($password);
                 }

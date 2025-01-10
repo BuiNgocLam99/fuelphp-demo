@@ -38,7 +38,8 @@
                 'id' => 'password-field',
                 'placeholder' => 'Password', 
                 'required' => 'required',
-                'minlength' => '6'
+                'minlength' => '6',
+                'type' => 'password'
             ]); ?>
             <button type="button" class="btn btn-outline-secondary" id="toggle-password">
                 Show
@@ -50,24 +51,6 @@
             </div>
         <?php endif; ?>
     </div><br>
-
-    <div class="form-group">
-        <?php echo Form::label('Group', 'group_id'); ?>
-        <select name="group_id" class="form-select" required>
-            <?php foreach ($group_ids as $group_name => $group_id): ?>
-                <option value="<?php echo $group_id; ?>" 
-                    <?php echo Input::post('group_id', '') == $group_id ? 'selected' : ''; ?>>
-                    <?php echo ucfirst($group_name); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <?php if (!empty($errors) && isset($errors['group_id'])): ?>
-            <div class="text-danger">
-                <?php echo $errors['group_id']; ?>
-            </div>
-        <?php endif; ?>
-    </div><br>
-
 
     <?php echo Form::submit('submit', 'Create', ['class' => 'btn btn-secondary']); ?>
 

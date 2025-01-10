@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Headers · Bootstrap v5.0</title>
+    <title><?= $title; ?></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -57,10 +57,7 @@
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li>
-                            <a href="/" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/') ? 'link-secondary' : 'link-dark'; ?>">Home</a>
-                        </li>
-                        <li>
-                            <a href="/booking" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/booking') ? 'link-secondary' : 'link-dark'; ?>">Booking List</a>
+                            <a href="/" class="nav-link px-2 <?= (parse_url(Uri::current(), PHP_URL_PATH) == '/') ? 'link-secondary' : 'link-dark'; ?>">Client</a>
                         </li>
                     </ul>
 

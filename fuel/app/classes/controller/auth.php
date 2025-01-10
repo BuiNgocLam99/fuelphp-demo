@@ -3,7 +3,7 @@
 use Fuel\Core\Debug;
 use Service\Email;
 
-require_once '/Applications/MAMP/htdocs/fuelphp/fuel/app/classes/service/email.php';
+require_once '/var/www/html/fuel/app/classes/service/email.php';
 
 class Controller_Auth extends Controller_Template
 {
@@ -45,13 +45,12 @@ class Controller_Auth extends Controller_Template
                         Input::post('username'),
                         Input::post('password'),
                         Input::post('email'),
-                        0
+                        3
                     );
         
-                    return Response::forge(json_encode([
-                        'status' => 'success',
-                        'message' => 'Registration successful.',
-                    ]), 200);
+                    Auth::login(Input::post('username'), Input::post('password'));
+
+                    Response::redirect('/');
                 } catch (SimpleUserUpdateException $e) {
                     $params = [
                         'errors' => [
@@ -147,7 +146,10 @@ class Controller_Auth extends Controller_Template
                         $user->password = Auth::instance()->hash_password($new_password);
                         $user->save();
 
-                        Service\Email::send($user, $new_password);
+                        $subject = 'Reset password';
+                        $message = 'This is your new password: ' . $new_password;
+
+                        Service\Email::send($user, $subject, $message);
 
                         DB::commit_transaction();
 
@@ -166,7 +168,46 @@ class Controller_Auth extends Controller_Template
         }
 
         $this->template->title = 'Reset password';
-        $this->template->content = View::forge('auth/resetpassword', isset($data) ? $data : []);
+        $this->template->content = View::forge('auth/resetpassword');
+    }
+
+    public function action_changepassword()
+    {
+        $params = [];
+
+        if (Input::method() == 'POST') {
+            $password = Input::post('password');
+
+            $val = Validation::forge();
+            $val->add('password', 'New Password')
+                ->add_rule('required')
+                ->add_rule('min_length', 6);
+
+            if ($val->run()) {
+                $user = Auth::instance()->get_user();
+                $userModel = Model_User::find($user->id);
+                
+                if ($userModel) {
+                    $userModel->password = Auth::instance()->hash_password($password);
+                    $userModel->save();
+
+                    Session::set_flash('success', 'Password has been updated successfully!');
+                    Response::redirect('auth/changepassword');
+                } else {
+                    Session::set_flash('error', 'User not found!');
+                    Response::redirect('auth/changepassword');
+                }
+            } else {
+                $params = [
+                    'errors' => $val->error(),
+                    'email' => Input::post('email'),
+                    'password' => Input::post('password')
+                ];
+            }
+        }
+
+        $this->template->title = 'Change Password';
+        $this->template->content = View::forge('auth/changepassword', $params);
     }
 
     public function action_logout()

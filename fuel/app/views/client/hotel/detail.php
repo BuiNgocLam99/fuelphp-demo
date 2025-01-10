@@ -125,7 +125,7 @@
             }
 
             if (new Date(datetimeFrom) >= new Date(datetimeTo)) {
-                $('#booking-message').html('The "From" datetime must be earlier than the "To" datetime.');
+                $('#booking-message').html('The "From" datetime must be earlier than the "To" datetime.').css('color', 'red');
                 return;
             }
 

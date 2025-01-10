@@ -6,6 +6,11 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c
 {
+    public static $files = array (
+        '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'p' => 
         array (
@@ -18,7 +23,6 @@ class ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c
         'M' => 
         array (
             'Monolog\\' => 8,
-            'Michelf\\' => 8,
         ),
         'F' => 
         array (
@@ -43,10 +47,6 @@ class ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Michelf\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/michelf/php-markdown/Michelf',
-        ),
         'Fuel\\Upload\\' => 
         array (
             0 => __DIR__ . '/..' . '/fuelphp/upload/src',
@@ -57,11 +57,27 @@ class ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'M' => 
+        array (
+            'Michelf' => 
+            array (
+                0 => __DIR__ . '/..' . '/michelf/php-markdown',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit80aacafa31ec9c3986072e98b8d1450c::$classMap;
 
         }, null, ClassLoader::class);
     }

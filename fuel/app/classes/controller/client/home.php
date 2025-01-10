@@ -10,6 +10,13 @@ class Controller_Client_Home extends Controller_Template
 {
     public $template = 'client/template';
 
+    public function before()
+    {
+        parent::before();
+
+        $this->template->title = 'Hotel';
+    }
+
 	public function action_index()
 	{
         $data = [];
@@ -76,9 +83,11 @@ class Controller_Client_Home extends Controller_Template
         } else {
             $data['hotels'] = Model_Hotel::query()
                 ->related('prefecture')
+                ->where_open()
                 ->where('name', 'LIKE', "%$query%")
-                // ->or_where('prefecture.name_jp', 'LIKE', "%$query%")
-                // ->or_where('prefecture.name_en', 'LIKE', "%$query%")
+                ->or_where('prefecture.name_jp', 'LIKE', "%$query%")
+                ->or_where('prefecture.name_en', 'LIKE', "%$query%")
+                ->where_close()
                 ->limit(19)
                 ->get();
         }

@@ -56,8 +56,6 @@
                         <button class="btn btn-success">Booked</button>
                     <?php } ?>
                 </td>
-
-                
             </tr>
         <?php endforeach; ?>
     </tbody>

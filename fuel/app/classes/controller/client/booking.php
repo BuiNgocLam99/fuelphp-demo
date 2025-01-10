@@ -10,7 +10,7 @@ class Controller_Client_Booking extends Controller_Template
 
         Controller_Auth::checkClient();
 
-        $this->template->title = 'Prefecture';
+        $this->template->title = 'Booking';
     }
 
     public function action_index()
@@ -36,7 +36,6 @@ class Controller_Client_Booking extends Controller_Template
             
 
             try {
-
                 $booking = Model_Booking::forge([
                     'hotel_id' => $hotel_id,
                     'user_id' => Auth::get_user_id()[1],
@@ -84,5 +83,35 @@ class Controller_Client_Booking extends Controller_Template
 
         $this->template->title = 'Booking';
         $this->template->content = View::forge('client/booking/index', $data);
+    }
+
+    public function action_cancel()
+    {
+        if (Input::method() == 'POST') {
+            $bookingId = Input::post('id');
+
+            $booking = Model_Booking::find($bookingId);
+            
+            if ($booking) {
+                $booking->status = 0;
+                $booking->updated_at = \Fuel\Core\Date::forge()->format('%Y-%m-%d %H:%M:%S');
+                $booking->save();
+                
+                return Response::forge(json_encode([
+                    'success' => true,
+                    'message' => 'Booking canceled successfully!'
+                ]), 200);
+            } else {
+                return Response::forge(json_encode([
+                    'success' => false,
+                    'message' => 'Booking not found.'
+                ]), 400);
+            }
+        }
+
+        return Response::forge(json_encode([
+            'success' => false,
+            'message' => 'Invalid request method.'
+        ]), 405);
     }
 }

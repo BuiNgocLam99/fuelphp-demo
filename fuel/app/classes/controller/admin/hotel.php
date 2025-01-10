@@ -74,10 +74,8 @@ class Controller_Admin_Hotel extends Controller_Template
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        if ($filter === 'oldest') {
+        if ($filter === 'newest') {
             $query->order_by('id', 'desc');
-        } else {
-            $query->order_by('id', 'asc');
         }
 
         $data['hotels'] = $query->get();
@@ -144,7 +142,7 @@ class Controller_Admin_Hotel extends Controller_Template
                     $filename = uniqid() . '_' . $file['name'];
                 
                     if (move_uploaded_file($file['tmp_name'], $upload_dir . $filename)) {
-                        $file_path = '/assets/img/hotel/' . $filename;
+                        $file_path = 'hotel/' . $filename;
                     } else {
                         $errors['image'] = "Can't upload image!";
                     }
